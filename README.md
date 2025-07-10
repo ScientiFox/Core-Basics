@@ -30,22 +30,38 @@ Contents:
 
    * Sorted Lists - A list which keeps all entries in sorted order perpetually using block searching on insert
 
-   * Linked Lists - A standard linked list, 
+   * Linked Lists - A standard linked list, with add and remove wrapped for convenience
 
-   * Array-linked lists - 
+   * Union trees - The incredibly simple and elegant, yet wildly powerful set-based tree structure
 
-   * Queues - 
+   * Array-linked lists - A joint Array/Linked list object (hence 'Alley') which maps a linked list with an array-based index to allow O(1) access to link elements without iterating over the list. Uses an insertion array to also manage insertion sort. Reflexive construction makes going from array to linked list properties trivial. More memory hungry because of hash-like indexing mechanism.
 
-   * Stacks - 
+   * Queues - A standard queue, wrapped methods for convenience
 
-   * Priority Queues - 
+   * Stacks - A standard stack, wrapped methods for convenience
 
-   * Graphs - 
+   * Priority Queues - A briority queue which merges a sorted list and a queue, to make managing ordered pop/push operations fast and direct
 
-- _Fundamental Algorithms_:
+   * Graphs - A general purpose graph representation, designed to be broad and flexible. Includes node and edge objects which natively handle directed, undirected, and weighted or non-weighted graphs seamlessly. The graph itself supports object-based, list-based, connectivity array based, and connectivity-pair based modes of structure. Dijkstra's algorithm (our favorite!) is implemented here because handling all those modes in it is easier inside the object. Also includes a multi-format input constructor, so graphs can be loaded in freely in any convenient format.
 
-- _Handy Assets_:
+- _Fundamental Algorithms_: A package containing basic algorithms which are used in many places, including extrnsively throughout the other libraries in this package. They are designed to use many efficiency best-practices, while being transparent and possible to easily add hooks or modify with problem-specific augmentations and optimizations. Includes:
+
+   * Block search - A standard log2 based divide and conquer search on a sorted list, accepting a abstracted 'get' function for constructing a relation operator
+
+   * Quicksort - Everyone's favorite recursive sorting algorithm, implemented to accept an abstracted relation operation.
+
+- _Handy Assets_: A collection of useful miscellaneous objects which often see use in other projects, most of which are geared towards sharing across processes and communication
+
+   * Datashare Utility - A local-host based data sharing utility which operates on a publisher/subscriber model to pass data to datashare clients using a compact typed data packet structure. Includes real-time update any cycling, with support for both multi-threaded and polled update options. Also includes an abstracted interface protocol so that either TCP sockets, or serialized ports (notably hardware Serial, I2C, or SPI ports) can be used to incorporate pub/sub members into the network. Backbone of the ROSFuse project.
+
+   * Timer - A basic timer object designed to maintain consistent clocking across processes, or within a process, but independent of it.
+
+   * Abstract Variable - A variable wrapper with common member slots, copy function, access inhibitor, and get/set methods, designed to be a cross-process container. Allows for locking of access in priority operations and semi-mutable access in different threads.
 
 - _Neural Networks_:
+
+   * 
+
+   * 
 
 
