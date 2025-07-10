@@ -63,3 +63,9 @@ Contents:
    * Error Back-propagation - The standard hidden-layer network structure, taking input vectors and mapping them through a hidden layer onto an output. Includes all the options above, and extensively vetted for speed, correctness, and stability. 
 
    * Autoencoders - An implementation of an I-I autoencoder, based on the EBP module with specific adjustments to automate self mapping training at all modes. Particularly useful for data classification, input compression, and pattern extraction.
+
+   * Perceptron - One of the simplest and earliest neural networks. 
+
+   * 
+
+   * 
