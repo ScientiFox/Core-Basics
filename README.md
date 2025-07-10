@@ -68,4 +68,6 @@ Contents:
 
    * Winner-take-all - A handy network for problems that are well conditioned to it, because it tends to learn fast and is low-overhead like the perceptron. Very little nuance in them, but good for quickly learning simple subproblems, like mentioned in the multi-testing above. They are also good for learning to turn the multi-agent wisdom of crowds outputs into actions- when trained on the input to all the others, _and the outputs of the others_.
 
-   * 
+   * Restricted Boltzmann Machines - Very fun and interesting, but tending to be finnicky, the RBMs are pretty good auto-encoders, but really shine in the task of doing missing-data interpolation when trained on a representative set and then allowed to fill in missing cells.
+
+   * Hebbian Networks - Another early netowrk, and useful as a lightweight unsupervised layer. Not really suited to a lot of problems, but helpfully covers areas that the perceptron isn't suited to, and with a similar computational footprint.
