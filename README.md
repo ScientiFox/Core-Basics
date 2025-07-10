@@ -50,7 +50,7 @@ Contents:
 
    * Quicksort - Everyone's favorite recursive sorting algorithm, implemented to accept an abstracted relation operation.
 
-- _Handy Assets_: A collection of useful miscellaneous objects which often see use in other projects, most of which are geared towards sharing across processes and communication
+- _Handy Assets_: A collection of useful miscellaneous objects which often see use in other projects, most of which are geared towards sharing across processes and communication. Includes:
 
    * Datashare Utility - A local-host based data sharing utility which operates on a publisher/subscriber model to pass data to datashare clients using a compact typed data packet structure. Includes real-time update any cycling, with support for both multi-threaded and polled update options. Also includes an abstracted interface protocol so that either TCP sockets, or serialized ports (notably hardware Serial, I2C, or SPI ports) can be used to incorporate pub/sub members into the network. Backbone of the ROSFuse project.
 
@@ -58,10 +58,8 @@ Contents:
 
    * Abstract Variable - A variable wrapper with common member slots, copy function, access inhibitor, and get/set methods, designed to be a cross-process container. Allows for locking of access in priority operations and semi-mutable access in different threads.
 
-- _Neural Networks_:
+- _Neural Networks_: A set of fundamental neural-network based functions, particularly ones that have been thoroughly vetted for operational functionality, accuracy, efficiency, and accessibility. Designed to support multiple modes such as individual or batch training, built-in optional I/O normalization, ordered or unordered training, bias input, and bias training. Also designed to allow for direct modification with problem-specific modifications. Includes:
 
-   * 
+   * Error Back-propagation - The standard hidden-layer network structure, taking input vectors and mapping them through a hidden layer onto an output. Includes all the options above, and extensively vetted for speed, correctness, and stability. 
 
-   * 
-
-
+   * Autoencoders - An implementation of an I-I autoencoder, based on the EBP module with specific adjustments to automate self mapping training at all modes. Particularly useful for data classification, input compression, and pattern extraction.
