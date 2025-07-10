@@ -4,8 +4,6 @@
 #  general purpose operations
 #
 # Contents:
-#  - Serial Protocol
-#  - Client/Server
 #  - Datashare Utility
 #  - Timer
 #  - Variable object
