@@ -60,7 +60,7 @@ class perceptron:
         return ox
 
     def train(self,x,d,r):
-        #Trainign step
+        #Training step
 
         op = self.feedforward(x) #Get FF output
 
