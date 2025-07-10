@@ -6,6 +6,7 @@
 #    - Alias Tree
 #    - Sorted List
 #    - Linked List
+#    - Union Tree
 #    - Alley (Array-linked list)
 #    - Queue
 #    - Stack
