@@ -58,14 +58,14 @@ Contents:
 
    * Abstract Variable - A variable wrapper with common member slots, copy function, access inhibitor, and get/set methods, designed to be a cross-process container. Allows for locking of access in priority operations and semi-mutable access in different threads.
 
-- _Neural Networks_: A set of fundamental neural-network based functions, particularly ones that have been thoroughly vetted for operational functionality, accuracy, efficiency, and accessibility. Designed to support multiple modes such as individual or batch training, built-in optional I/O normalization, ordered or unordered training, bias input, and bias training. Also designed to allow for direct modification with problem-specific modifications. Includes:
+- _Neural Networks_: A set of fundamental neural-network based functions, particularly ones that have been thoroughly vetted for operational functionality, accuracy, efficiency, and accessibility. Designed to support multiple modes such as individual or batch training, built-in optional I/O normalization, ordered or unordered training, bias input, and bias training. Also designed to allow for direct modification with problem-specific modifications. We often use the smaller, less powerful types in combinations, either combining multiple of the same, or heterogenous sets, and training them in parallel, then using a weighted accuracy metric to pick an answer from all of them. We also use them as subprocess solvers in hierarchical systems, where a high-level controller applys a small NN quickly to train up a classifier or behavior from small input sets to, essentially, build up a generic subprocess for a subtask in a hierarchy. Sometimes a very effective method here is training several in parallel, seeking their input, trying one, then if the answer was wrong, trying any of the once that didn't pick the known wrong answer and then batch training all on that information. Includes:
 
    * Error Back-propagation - The standard hidden-layer network structure, taking input vectors and mapping them through a hidden layer onto an output. Includes all the options above, and extensively vetted for speed, correctness, and stability. 
 
    * Autoencoders - An implementation of an I-I autoencoder, based on the EBP module with specific adjustments to automate self mapping training at all modes. Particularly useful for data classification, input compression, and pattern extraction.
 
-   * Perceptron - One of the simplest and earliest neural networks. 
+   * Perceptron - One of the simplest and earliest neural networks. Incredibly weak on its own, but fast, simple, and low overhead, so it makes a great part of a multicomponent system. In particular we have luck training several of them in parallel and applying a weighted-by-accuracy or answer-clustering combination approach. Also makes for a good small-scale single purpose agent solver in larger hierarchical systems.
 
-   * 
+   * Winner-take-all - A handy network for problems that are well conditioned to it, because it tends to learn fast and is low-overhead like the perceptron. Very little nuance in them, but good for quickly learning simple subproblems, like mentioned in the multi-testing above. They are also good for learning to turn the multi-agent wisdom of crowds outputs into actions- when trained on the input to all the others, _and the outputs of the others_.
 
    * 
