@@ -2,9 +2,12 @@
 #EDA neural networks package
 #
 #Contents:
-#
 #   - Error Backpropagation
 #   - Autoencoder
+#   - Perceptron
+#   - Winner Take All network
+#   - Restricted Boltzmann Machine
+#   - Hebbian Neural Network
 #
 ###
 
@@ -13,6 +16,183 @@ import math,time,random
 
 #For linear algebra
 import numpy as np
+
+#Basic sigmoid function
+def sigmoid(x):
+    return 1.0/(1.0 + math.e**(-1.0*x))
+
+#Function to normalize a row
+def row_normalize(W):
+    a,b = np.shape(W)
+    S = W**2
+    S = np.reshape(np.sqrt(np.sum(S,axis=1)),(a,1))
+    mag = np.dot(S,np.ones((1,b)))
+    Wo = W/mag
+    return Wo
+
+#Function to normalize a column
+def column_normalize(V):
+    a,b = np.shape(V)
+    S = V**2
+    S = np.reshape(np.sqrt(np.sum(S,axis=0)),(1,b))
+    mag = np.dot(np.ones((a,1)),S)
+    Vo = V/mag
+    return Vo
+
+
+class perceptron:
+    #Implementing a basic perceptron NN
+
+    def __init__(self,_i,_o):
+        #Initialize input, output, and random weight
+        self.i = _i
+        self.o = _o
+        self.W = 2*np.random.random((self.o,self.i+1))-1
+        self.error = -1 #error holder
+
+    def feedforward(self,x):
+        #Feedforward step
+        xi = np.zeros((self.i+1,1)) #Construct input with bias
+        xi[:-1,0:1] = x.T
+        xi[-1:,0:1] = -1
+        sx = xi 
+        ox = 1.0*(np.dot(self.W,sx)>0.0) #calculate output
+        return ox
+
+    def train(self,x,d,r):
+        #Trainign step
+
+        op = self.feedforward(x) #Get FF output
+
+        xi = np.zeros((self.i+1,1)) #Construct biased input
+        xi[:-1,0:1] = x.T
+        xi[-1:,0:1] = -1
+
+        dW = r*np.dot(xi,(d - op.T)) #calculate weight change
+        self.W = self.W + dW.T #Apply weight change
+        self.error = np.sum((d - op.T)**2) #update error
+
+class RBM:
+    #Implementation of a restricted Boltzmann Machine
+
+    def __init__(self,_H,_V):
+        #Initialize hidden, visible layers, weights, bias and error
+        self.H = _H
+        self.V = _V
+        self.W = np.random.random((self.V+1,self.H+1))
+        self.W[-1,-1] = 0
+        self.bias = np.array([[1]])
+        self.error = -1
+
+    def activation_H(self,v):
+        #Calculate hidden layer activation
+        va = np.zeros((1,self.V+1)) #make visible vector
+        va[0,:-1] = v
+        va[0,-1] = 1
+        h_act = np.dot(va,self.W[:,:-1]) #multiply by weight
+        return h_act #return activation
+
+    def activation_V(self,h):
+        #calculate visible layer 
+        ha = np.zeros((1,self.H+1)) #construct hidden vector
+        ha[:,:-1] = h
+        ha[:,-1] = 1
+        v_act = np.dot(ha,self.W.T[:,:-1]) #multiply by weight
+        return v_act #return activation
+
+    def train(self,x,a):
+        #Training method
+
+        vi = x #set visible vector input
+        ax = sigmoid(self.activation_H(vi)) #Normalize
+        Pe = np.dot(con(vi,self.bias).T,con(ax,self.bias)) #Get positive array
+
+        #Get normalized activations
+        avr = sigmoid(self.activation_V(ax))
+        ahr = sigmoid(self.activation_H(avr))
+        Ne = np.dot(con(avr,self.bias).T,con(ahr,self.bias)) #get negative array
+
+        dW = np.zeros(((self.V+1,self.H+1))) #Init weight change
+        dW[:self.V+1,:self.H+1] = a*(Pe - Ne) #Set internal weights to error difference
+        dW[-1,-1] = 0 #keep bias zone clear
+
+        self.error = np.sum((vi-avr)**2) #update error
+        self.W = self.W + dW #apply change to weights
+
+class WTA:
+    #Implementation of a winner-take-all network
+
+    def __init__(self,_n,_i,_a):
+        #Initialize input, output and weights array
+        self.n = _n
+        self.i = _i
+        self.a = _a
+        self.W = 2*np.random.random((self.n,self.i))-1
+        self.W = row_normalize(self.W) #weights are row normalized
+
+    def set_a(self,_a):
+        #Wrapper to set learning rate
+        self.a = _a
+
+    def feedforward_train(self,I):
+        #Feedforward training method
+
+        In = column_normalize(I) #Normalize input
+        O = np.dot(self.W,In) #Calculate output
+
+        mx = 1.0*(O==np.max(O)) #Find max output cell and grab index
+        index = np.dot(np.array([range(self.n)]),mx) #index of winner
+
+        Ones = np.ones((1,self.n)) #Build input meshgrid
+        Xs = (np.dot(In,Ones)).T
+
+        Om = 1.0*(O==np.max(O)) #Build output max meshgrid
+        sel = np.dot(Om,np.ones((1,self.i)))
+
+        dW = self.a*(Xs - self.W)*(sel) #Calsulate weight update
+        self.W = self.W + dW #apply update
+        self.W = row_normalize(self.W) #ensure normalization
+
+        return O #return output 
+
+    def feedforward(self,I):
+        #Feedforward without training
+        In = column_normalize(I) #normalize input
+        O = np.dot(self.W,In) #calculate output
+        mx = 1.0*(O==np.max(O)) #grab max element
+        index = np.dot(np.array([range(self.n)]),mx) #fetch max index
+        return mx #return max index - the winner
+
+class HEB:
+    #Implementation fo a Hebbian neural network
+
+    def __init__(self,_n,_i,_a):
+        #Init input, output, learning rate, and weights
+        self.n = _n
+        self.i = _i
+        self.a = _a
+        self.W = 2*np.random.random((self.n,self.i))-1
+        self.W = row_normalize(self.W) #Normalized weights
+        self.dW = np.copy(self.W)*0.0 #update holder
+
+    def feedforward_train(self,I):
+        #FF trainign method
+
+        a,b = np.shape(self.W) #Get weight shape
+        In = column_normalize(I) #Normalize inputs
+        o = np.dot(self.W,In) #Get output
+
+        onet = np.dot(o,np.ones((1,b))) #calculate output sum
+        self.dW = self.a*(onet*self.W) #calculate weight update
+        self.W = self.W + self.dW #apply update
+        self.W = row_normalize(self.W) #ensure normalization
+        return o #return output
+
+    def feedforward(self,I):
+        #FF output without training
+        In = column_normalize(I) #normalize input
+        o = np.dot(self.W,In) #calculate output
+        return o #return output
 
 
 class L3_EBP:
@@ -334,7 +514,7 @@ if __name__ == '__main__':
         print("Validate err:")
         print("_____________")
 
-        # FOr EBP trials
+        # For EBP trials
 ##        print("EBP: ")
 ##        print("Ratio of post- to pre-train error:")
 ##        pT = (1.0/(M_test-sub_n))*e_unTrained
