@@ -2,7 +2,7 @@
 
 This package contains a set of libraries we've assembled over time, containing tools and assets used across a wide range of projects. The libraries within implement several kinds of objects, algorithms, and datastructures that we consider basic building blocks. Some of these are standards, implemented at the basic level for more control or flexibility, or standardization and internal feedback. Others implement optional efficiency improvements or hooks we prefer to have, and some are creations of our own, which we deploy more generally than individual projects.
 
-Contents:
+**Contents:**
 - _Agent Control_: A suite of agent-based control algorithms which are helpful for rapidly implementing an executive control system for software, particularly avoiding vetting the system iteself and eliminating errors from that side fo development. Implements most utilities with optional parallelized threading. Includes:
 
     * General Purpose State machine - Probably the most fundamental controller
